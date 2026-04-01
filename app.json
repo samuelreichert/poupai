@@ -43,6 +43,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c9f41102-e0ac-4dbd-9b3b-18f029f41b83"
+      }
+    },
+    "owner": "aspr-devs"
   }
 }
