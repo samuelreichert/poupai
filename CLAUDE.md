@@ -21,6 +21,7 @@
 - Prefer Expo SDK modules over third-party libraries. Only reach for a third-party lib if the Expo SDK does not cover the need.
 - Keep `newArchEnabled: true` in app.json at all times.
 - The main focus is iOS and Android first. If a feature is not possible on Web, that is acceptable.
+- **Always use `@/` path aliases for internal imports** (e.g. `import { Colors } from '@/constants/theme'`). Never use relative paths (`../`, `./`) for imports between app modules. The alias is configured in `tsconfig.json` and resolves to the project root.
 
 ## Storage Rules
 
@@ -62,7 +63,9 @@ All color tokens, typography scale, spacing, and shadow presets are defined in `
 
 ### Color Tokens
 
-Use the named tokens from `constants/theme.ts`. Do not hardcode hex values in components.
+`Colors` has `light` and `dark` variants. Access via `Colors[scheme].token_name`. Use `useColorScheme()` to get the active scheme. Do not hardcode hex values in components.
+
+**Light mode:**
 
 | Token | Value | Usage |
 |---|---|---|
@@ -72,15 +75,27 @@ Use the named tokens from `constants/theme.ts`. Do not hardcode hex values in co
 | `surface_container_lowest` | `#ffffff` | Interactive cards — pop effect |
 | `surface_container_high` | `#e3e5e8` | List item hover states |
 | `primary` | `#000000` | CTA gradient base |
-| `primary_container` | `#131b2e` | Midnight Blue — CTA end, dark backgrounds |
+| `primary_container` | `#131b2e` | Midnight Blue — CTA end |
 | `secondary` | `#735c00` | Champagne Gold — high-value actions only |
-| `secondary_fixed` | `#735c00` | Interactive Gold buttons (e.g. "Invest") |
-| `on_primary_fixed_variant` | `#735c00` | Tertiary button text |
 | `on_surface` | `#0f172a` | Primary text |
 | `on_surface_variant` | `#45464d` | Metadata / labels |
-| `on_primary` | `#ffffff` | Text on dark/midnight buttons |
-| `outline_variant` | `#c6c6cd` | Ghost border (use at 20% opacity only, accessibility fallback) |
-| `shadow_color` | `#0f172a` | Ambient shadow tint (4% opacity only) |
+| `on_primary` | `#ffffff` | Text on dark buttons |
+
+**Dark mode:**
+
+| Token | Value | Usage |
+|---|---|---|
+| `surface` | `#000000` | Real black background |
+| `surface_container` | `#0c1422` | Dark navy containers |
+| `surface_container_low` | `#090f1c` | Slightly elevated |
+| `surface_container_lowest` | `#131b2e` | Midnight Blue cards — pop against black |
+| `surface_container_high` | `#1c2840` | Hover states / highest elevation |
+| `primary` | `#f8fafc` | Near-white CTA gradient base |
+| `primary_container` | `#131b2e` | Midnight Blue unchanged |
+| `secondary` | `#c9a227` | Gold — brightened for dark backgrounds |
+| `on_surface` | `#f1f5f9` | Near-white primary text |
+| `on_surface_variant` | `#94a3b8` | Muted slate for labels |
+| `on_primary` | `#131b2e` | Dark text on light CTA buttons |
 
 ### Typography
 
