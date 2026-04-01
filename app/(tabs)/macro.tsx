@@ -4,7 +4,7 @@ import { AvatarButton } from '@/components/avatar-button';
 import { Colors, Spacing } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
-export default function HomeScreen() {
+export default function MacroScreen() {
   const scheme = useColorScheme() ?? 'light';
 
   return (

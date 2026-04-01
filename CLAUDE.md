@@ -35,6 +35,10 @@
 - Always use the latest stable versions of packages.
 - Before proposing any implementation, search for the most up-to-date documentation for the relevant package. Avoid stale examples.
 
+## Naming Rules
+
+- **File and folder names must always be in English.** Only the UI-facing content (labels, strings, messages) should be in Brazilian Portuguese.
+
 ## Code Quality Rules
 
 - Write **minimal code** — only what is asked, nothing beyond the stated scope.
