@@ -12,9 +12,11 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-// Import storage to trigger module-level theme restoration before first render
-import '@/constants/storage';
+import { initializeTheme } from '@/constants/storage';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+
+// Restore persisted theme preference before first render (safe — lazy MMKV init)
+initializeTheme();
 
 SplashScreen.preventAutoHideAsync();
 
