@@ -10,56 +10,32 @@
 
 export const Colors = {
   light: {
-    // Surface hierarchy — depth through tonal layering, not borders
-    surface: '#f7f9fb',                  // main app background
-    surface_container: '#eceef0',        // secondary nav / sidebars
-    surface_container_low: '#f2f4f6',    // secondary content sections
-    surface_container_lowest: '#ffffff', // interactive cards — pop effect
-    surface_container_high: '#e3e5e8',   // list item hover states
-
-    // Brand
-    primary: '#000000',                  // CTA gradient base
-    primary_container: '#131b2e',        // Midnight Blue — CTA gradient end
-    secondary: '#735c00',                // Champagne Gold — high-value actions only
-    secondary_fixed: '#735c00',          // interactive Gold buttons (e.g. "Invest")
-    on_primary_fixed_variant: '#735c00', // tertiary button text
-
-    // Text
-    on_surface: '#0f172a',               // primary text
-    on_surface_variant: '#45464d',       // metadata / labels
-    on_primary: '#ffffff',               // text on dark/midnight buttons
-
-    // Borders — use ONLY as accessibility ghost border at 20% opacity
-    outline_variant: '#c6c6cd',
-
-    // Shadows — use at 4% opacity only
+    surface: '#f7f9fb',
+    surface_container: '#eceef0',
+    surface_container_low: '#f2f4f6',
+    surface_container_lowest: '#ffffff',
+    surface_container_high: '#e3e5e8',
+    primary: '#000000',
+    primary_container: '#131b2e',
+    secondary: '#735c00',
+    on_surface: '#0f172a',
+    on_surface_variant: '#45464d',
+    on_primary: '#ffffff',
     shadow_color: '#0f172a',
   },
 
   dark: {
-    // Real black base — Midnight Blue surfaces pop against it
-    surface: '#000000',                  // real black background
-    surface_container: '#0c1422',        // dark navy containers
-    surface_container_low: '#090f1c',    // slightly elevated
-    surface_container_lowest: '#131b2e', // Midnight Blue — cards pop against black
-    surface_container_high: '#1c2840',   // hover states / highest elevation
-
-    // Brand
-    primary: '#f8fafc',                  // near-white CTA gradient base on dark
-    primary_container: '#131b2e',        // Midnight Blue unchanged
-    secondary: '#c9a227',                // Gold — brightened for dark backgrounds
-    secondary_fixed: '#c9a227',
-    on_primary_fixed_variant: '#c9a227',
-
-    // Text
-    on_surface: '#f1f5f9',               // near-white primary text
-    on_surface_variant: '#94a3b8',       // muted slate for labels / metadata
-    on_primary: '#131b2e',               // dark text on light CTA buttons
-
-    // Borders — use ONLY as accessibility ghost border at 20% opacity
-    outline_variant: '#1e2d42',
-
-    // Shadows
+    surface: '#000000',
+    surface_container: '#0c1422',
+    surface_container_low: '#090f1c',
+    surface_container_lowest: '#131b2e',
+    surface_container_high: '#1c2840',
+    primary: '#f8fafc',
+    primary_container: '#131b2e',
+    secondary: '#c9a227',
+    on_surface: '#f1f5f9',
+    on_surface_variant: '#94a3b8',
+    on_primary: '#131b2e',
     shadow_color: '#000000',
   },
 } as const;
@@ -76,10 +52,10 @@ export type ColorToken = keyof typeof Colors.light;
  * These are the exact strings registered by @expo-google-fonts.
  */
 export const Fonts = {
-  manrope_bold: 'Manrope_700Bold',         // Display + Headlines
+  manrope_bold: 'Manrope_700Bold', // Display + Headlines
   manrope_semibold: 'Manrope_600SemiBold',
   manrope_medium: 'Manrope_500Medium',
-  inter_regular: 'Inter_400Regular',       // Body + Labels
+  inter_regular: 'Inter_400Regular', // Body + Labels
   inter_medium: 'Inter_500Medium',
 } as const;
 
@@ -91,12 +67,12 @@ export const Typography = {
   display_lg: {
     fontFamily: Fonts.manrope_bold,
     fontSize: 56,
-    lineHeight: 62,  // account balances, net worth
+    lineHeight: 62, // account balances, net worth
   },
   display_sm: {
     fontFamily: Fonts.manrope_bold,
     fontSize: 36,
-    lineHeight: 41,  // financial data anchors in cards
+    lineHeight: 41, // financial data anchors in cards
   },
   headline_lg: {
     fontFamily: Fonts.manrope_semibold,
@@ -106,17 +82,17 @@ export const Typography = {
   headline_md: {
     fontFamily: Fonts.manrope_semibold,
     fontSize: 22,
-    lineHeight: 28,  // section titles
+    lineHeight: 28, // section titles
   },
   body_md: {
     fontFamily: Fonts.inter_regular,
     fontSize: 14,
-    lineHeight: 21,  // 1.5 minimum per design rules
+    lineHeight: 21, // 1.5 minimum per design rules
   },
   label_md: {
     fontFamily: Fonts.inter_regular,
     fontSize: 12,
-    lineHeight: 17,  // metadata
+    lineHeight: 17, // metadata
   },
 } as const;
 
@@ -142,10 +118,10 @@ export const Spacing = {
 // Border Radius
 // ---------------------------------------------------------------------------
 
-/** Always use DEFAULT or lg. No sharp 0px corners. No arbitrary radii. */
 export const Radius = {
   DEFAULT: 8,
   lg: 16,
+  full: 9999,
 } as const;
 
 // ---------------------------------------------------------------------------

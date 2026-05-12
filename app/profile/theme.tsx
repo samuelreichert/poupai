@@ -1,99 +1,137 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { useRouter } from 'expo-router';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import {
+  Appearance,
+  ColorSchemeName,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
-import { Colors, Typography, Spacing, Radius } from '@/constants/theme';
+import { storage, STORAGE_KEYS } from '@/constants/storage';
+import { Colors, Radius, Spacing, Typography } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { getThemePreference, setThemePreference, type ThemePreference } from '@/constants/storage';
 
-const OPTIONS: { value: ThemePreference; label: string }[] = [
+const CIRCLE_SIZE = 64;
+
+const OPTIONS: { value: ColorSchemeName; label: string }[] = [
   { value: 'light', label: 'Claro' },
   { value: 'dark', label: 'Escuro' },
-  { value: 'system', label: 'Sistema' },
+  { value: 'unspecified', label: 'Sistema' },
 ];
 
-export default function VisualScreen() {
-  const router = useRouter();
-  const scheme = useColorScheme() ?? 'light';
+export default function AparenciaScreen() {
+  const scheme = useColorScheme();
   const colors = Colors[scheme];
-  const current = getThemePreference();
+
+  const storedScheme = (storage.getString(STORAGE_KEYS.colorScheme) ??
+    'unspecified') as ColorSchemeName;
+
+  const handleSelect = (value: ColorSchemeName) => {
+    storage.set(STORAGE_KEYS.colorScheme, value ?? 'unspecified');
+    Appearance.setColorScheme(value);
+  };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface }]}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <MaterialIcons name="chevron-left" size={28} color={colors.on_surface} />
-        </Pressable>
-        <Text style={[styles.title, { color: colors.on_surface }]}>Visual</Text>
-        <View style={styles.backButton} />
-      </View>
-
-      {/* Options */}
-      <View style={styles.options}>
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      contentContainerStyle={[styles.content, { backgroundColor: colors.surface }]}
+      style={{ backgroundColor: colors.surface }}
+    >
+      <View style={styles.row}>
         {OPTIONS.map((option) => {
-          const isActive = current === option.value;
+          const isActive = storedScheme === option.value;
           return (
-            <Pressable
-              key={option.value}
-              onPress={() => setThemePreference(option.value)}
-              style={[
-                styles.option,
-                {
-                  backgroundColor: isActive
-                    ? colors.surface_container_high
-                    : colors.surface_container_lowest,
-                },
-              ]}
-            >
-              <Text style={[styles.optionLabel, { color: colors.on_surface }]}>
+            <View key={option.value} style={styles.optionUnit}>
+              <Pressable
+                onPress={() => handleSelect(option.value)}
+                style={[
+                  styles.circle,
+                  isActive ? { borderColor: colors.on_surface } : { borderColor: 'transparent' },
+                ]}
+                accessibilityLabel={option.label}
+                accessibilityRole="radio"
+                accessibilityState={{ selected: isActive }}
+              >
+                {option.value === 'unspecified' ? (
+                  <View style={styles.splitCircle}>
+                    <View
+                      style={[
+                        styles.halfCircle,
+                        { backgroundColor: Colors.light.surface_container_lowest },
+                      ]}
+                    />
+                    <View
+                      style={[
+                        styles.halfCircle,
+                        { backgroundColor: Colors.dark.surface_container_lowest },
+                      ]}
+                    />
+                  </View>
+                ) : (
+                  <View
+                    style={[
+                      styles.solidCircle,
+                      {
+                        backgroundColor:
+                          option.value === 'light'
+                            ? Colors.light.surface_container_lowest
+                            : Colors.dark.surface_container_lowest,
+                      },
+                    ]}
+                  />
+                )}
+              </Pressable>
+              <Text
+                style={[
+                  styles.label,
+                  { color: isActive ? colors.on_surface : colors.on_surface_variant },
+                ]}
+              >
                 {option.label}
               </Text>
-              {isActive && (
-                <MaterialIcons name="check" size={20} color={colors.secondary} />
-              )}
-            </Pressable>
+            </View>
           );
         })}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  content: {
+    flexGrow: 1,
   },
-  header: {
+  row: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: Spacing[16],
-    paddingHorizontal: Spacing[3],
-    paddingBottom: Spacing[4],
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: Spacing[8],
+    gap: Spacing[8],
   },
-  title: {
-    ...Typography.headline_md,
-  },
-  options: {
-    paddingHorizontal: Spacing[4],
+  optionUnit: {
+    alignItems: 'center',
     gap: Spacing[3],
   },
-  option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: Spacing[4],
-    paddingHorizontal: Spacing[4],
-    borderRadius: Radius.DEFAULT,
+  circle: {
+    width: CIRCLE_SIZE,
+    height: CIRCLE_SIZE,
+    borderRadius: Radius.full,
+    borderWidth: 2,
+    overflow: 'hidden',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
   },
-  optionLabel: {
-    ...Typography.body_md,
+  splitCircle: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  halfCircle: {
+    flex: 1,
+  },
+  solidCircle: {
+    flex: 1,
+  },
+  label: {
+    ...Typography.label_md,
   },
 });

@@ -1,125 +1,146 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { useRouter } from 'expo-router';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { FlashList } from '@shopify/flash-list';
+import { useNavigation, useRouter } from 'expo-router';
+import { useCallback, useRef } from 'react';
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
-import { GlassButton } from '@/components/glass-button';
-import { Colors, Typography, Spacing, Radius } from '@/constants/theme';
+import { Button } from '@/components/button/button';
+import { Icon } from '@/components/icon';
+import { Colors, Radius, Spacing, Typography } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
-const AVATAR_SIZE = 80;
-const CLOSE_SIZE = 36;
+const AVATAR_SIZE = 96;
+// Approx vertical offset at which the username text scrolls behind the nav bar
+const TITLE_THRESHOLD = 130;
+
+type MenuItem = {
+  id: string;
+  label: string;
+  sf: string;
+  md: React.ComponentProps<typeof Icon>['md'];
+  onPress: () => void;
+};
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const scheme = useColorScheme() ?? 'light';
+  const navigation = useNavigation();
+  const scheme = useColorScheme();
   const colors = Colors[scheme];
+  const titleShown = useRef(false);
+
+  const MENU_ITEMS: MenuItem[] = [
+    {
+      id: 'aparencia',
+      label: 'Aparência',
+      sf: 'paintpalette.fill',
+      md: 'palette',
+      onPress: () => router.push('/profile/theme'),
+    },
+    {
+      id: 'logout',
+      label: 'Sair',
+      sf: 'rectangle.portrait.and.arrow.right',
+      md: 'logout',
+      onPress: () => router.back(),
+    },
+  ];
+
+  const handleScroll = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const y = e.nativeEvent.contentOffset.y;
+      const shouldShow = y > TITLE_THRESHOLD;
+      if (shouldShow !== titleShown.current) {
+        titleShown.current = shouldShow;
+        navigation.setOptions({ title: shouldShow ? 'Samuel Reichert' : ' ' });
+      }
+    },
+    [navigation],
+  );
 
   return (
-    <Animated.View
-      entering={FadeIn.duration(200)}
-      exiting={FadeOut.duration(150)}
-      style={styles.overlay}
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      contentContainerStyle={styles.content}
+      onScroll={handleScroll}
+      scrollEventThrottle={16}
     >
-      <Pressable style={StyleSheet.absoluteFill} onPress={() => router.back()} />
-
-      <Animated.View
-        entering={FadeIn.duration(250).delay(50)}
-        style={[styles.content, { backgroundColor: colors.surface }]}
-      >
-        {/* Close button */}
-        <View style={styles.closeRow}>
-          <GlassButton size={CLOSE_SIZE} onPress={() => router.back()}>
-            <MaterialIcons name="close" size={20} color={colors.on_surface} />
-          </GlassButton>
+      {/* Avatar */}
+      <View style={styles.profileSection}>
+        <View style={[styles.avatarCircle, { backgroundColor: colors.surface_container_high }]}>
+          <Button
+            label="Avatar"
+            variant="icon"
+            icon="person"
+            onPress={() => {}}
+            size={AVATAR_SIZE}
+            accessibilityLabel="Avatar"
+          />
         </View>
+        <Text style={[styles.name, { color: colors.on_surface }]}>Samuel Reichert</Text>
+      </View>
 
-        {/* Avatar */}
-        <View style={styles.profileSection}>
-          <View
-            style={[
-              styles.avatar,
-              { backgroundColor: colors.surface_container_high },
-            ]}
-          >
-            <Text style={[styles.avatarText, { color: colors.on_surface }]}>
-              SR
-            </Text>
-          </View>
-          <Text style={[styles.name, { color: colors.on_surface }]}>
-            Samuel Reichert
-          </Text>
-        </View>
-
-        {/* Menu */}
-        <View style={styles.menu}>
-          <Pressable
-            onPress={() => router.push('/profile/theme')}
-            style={[
-              styles.menuItem,
-              { backgroundColor: colors.surface_container_lowest },
-            ]}
-          >
-            <Text style={[styles.menuLabel, { color: colors.on_surface }]}>
-              Visual
-            </Text>
-            <MaterialIcons
-              name="chevron-right"
-              size={22}
-              color={colors.on_surface_variant}
-            />
-          </Pressable>
-        </View>
-      </Animated.View>
-    </Animated.View>
+      {/* Menu card */}
+      <View style={[styles.menuCard, { backgroundColor: colors.surface_container_lowest }]}>
+        <FlashList
+          data={MENU_ITEMS}
+          scrollEnabled={false}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <Pressable
+              onPress={item.onPress}
+              style={({ pressed }) => [
+                styles.menuItem,
+                pressed && { backgroundColor: colors.surface_container_high },
+              ]}
+              accessibilityRole="button"
+            >
+              <Icon sf={item.sf} md={item.md} size={18} color={colors.on_surface_variant} />
+              <Text style={[styles.menuLabel, { color: colors.on_surface }]}>{item.label}</Text>
+            </Pressable>
+          )}
+        />
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
   content: {
-    flex: 1,
-    marginTop: 60,
-    borderTopLeftRadius: Radius.lg,
-    borderTopRightRadius: Radius.lg,
-  },
-  closeRow: {
-    paddingTop: Spacing[4],
     paddingHorizontal: Spacing[4],
+    paddingBottom: Spacing[8],
+    gap: Spacing[4],
   },
   profileSection: {
     alignItems: 'center',
-    paddingTop: Spacing[8],
-    paddingBottom: Spacing[10],
+    paddingVertical: Spacing[8],
+    gap: Spacing[3],
   },
-  avatar: {
+  avatarCircle: {
     width: AVATAR_SIZE,
     height: AVATAR_SIZE,
-    borderRadius: AVATAR_SIZE / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avatarText: {
-    ...Typography.headline_lg,
+    borderRadius: Radius.full,
+    overflow: 'hidden',
   },
   name: {
     ...Typography.headline_md,
-    marginTop: Spacing[3],
   },
-  menu: {
-    paddingHorizontal: Spacing[4],
-    gap: Spacing[3],
+  menuCard: {
+    borderRadius: Radius.lg,
+    overflow: 'hidden',
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: Spacing[3],
     paddingVertical: Spacing[4],
     paddingHorizontal: Spacing[4],
-    borderRadius: Radius.DEFAULT,
   },
   menuLabel: {
     ...Typography.body_md,

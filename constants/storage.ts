@@ -1,37 +1,31 @@
-import { Appearance } from 'react-native';
+import type { MMKV } from 'react-native-mmkv';
 
-export type ThemePreference = 'light' | 'dark' | 'system';
+let storageInstance: MMKV | null = null;
 
-const THEME_KEY = 'theme';
+function getStorage(): MMKV | null {
+  if (storageInstance) {
+    return storageInstance;
+  }
 
-// Lazy singleton — deferred so the Nitro native module is ready before first access
-let _storage: import('react-native-mmkv').MMKV | null = null;
-
-function getStorage(): import('react-native-mmkv').MMKV | null {
-  if (_storage) return _storage;
   try {
-    const { MMKV } = require('react-native-mmkv') as typeof import('react-native-mmkv');
-    _storage = new MMKV({ id: 'poupai-settings' });
+    const { createMMKV } = require('react-native-mmkv') as typeof import('react-native-mmkv');
+    storageInstance = createMMKV({ id: 'poupai-settings' });
   } catch {
-    // Native module not available (prebuild not done or Expo Go)
+    return null;
   }
-  return _storage;
+
+  return storageInstance;
 }
 
-export function getThemePreference(): ThemePreference {
-  const value = getStorage()?.getString(THEME_KEY);
-  if (value === 'light' || value === 'dark') return value;
-  return 'system';
-}
+export const storage = {
+  getString(key: string) {
+    return getStorage()?.getString(key);
+  },
+  set(key: string, value: boolean | string | number | ArrayBuffer) {
+    getStorage()?.set(key, value);
+  },
+};
 
-export function setThemePreference(value: ThemePreference) {
-  getStorage()?.set(THEME_KEY, value);
-  Appearance.setColorScheme(value === 'system' ? null : value);
-}
-
-export function initializeTheme() {
-  const pref = getThemePreference();
-  if (pref !== 'system') {
-    Appearance.setColorScheme(pref);
-  }
-}
+export const STORAGE_KEYS = {
+  colorScheme: 'colorScheme',
+} as const;

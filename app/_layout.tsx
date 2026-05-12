@@ -1,22 +1,20 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
 import {
   Manrope_500Medium,
   Manrope_600SemiBold,
   Manrope_700Bold,
 } from '@expo-google-fonts/manrope';
-import { Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { Appearance } from 'react-native';
 
-import { initializeTheme } from '@/constants/storage';
+import { storage, STORAGE_KEYS } from '@/constants/storage';
+import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-
-// Restore persisted theme preference before first render (safe — lazy MMKV init)
-initializeTheme();
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,8 +34,15 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
+    const stored = storage.getString(STORAGE_KEYS.colorScheme);
+    if (stored === 'light' || stored === 'dark') {
+      Appearance.setColorScheme(stored);
+    }
+  }, []);
+
+  useEffect(() => {
     if (fontsLoaded) {
-      SplashScreen.hideAsync();
+      SplashScreen.hide();
     }
   }, [fontsLoaded]);
 
@@ -47,18 +52,16 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="profile"
-          options={{
-            presentation: 'transparentModal',
-            headerShown: false,
-            animation: 'fade',
-          }}
-        />
+      <Stack
+        screenOptions={{
+          contentStyle: { backgroundColor: Colors[colorScheme].surface },
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="profile" />
       </Stack>
-      <StatusBar style="auto" />
+      <StatusBar style="auto" animated />
     </ThemeProvider>
   );
 }

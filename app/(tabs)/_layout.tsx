@@ -1,19 +1,31 @@
-import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
+import { NativeTabs } from 'expo-router/unstable-native-tabs';
+
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function TabLayout() {
+  const scheme = useColorScheme();
+  const colors = Colors[scheme];
+
   return (
-    <NativeTabs>
-      <NativeTabs.Trigger name="index">
-        <Label>Inicio</Label>
-        <Icon sf={{ default: 'house', selected: 'house.fill' }} />
+    <NativeTabs blurEffect="systemChromeMaterial" tintColor={colors.primary}>
+      <NativeTabs.Trigger name="(home)">
+        <NativeTabs.Trigger.Label>Início</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf={{ default: 'house.fill', selected: 'house.fill' }} md="home" />
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="assets">
-        <Label>Ativos</Label>
-        <Icon sf={{ default: 'chart.pie', selected: 'chart.pie.fill' }} />
+        <NativeTabs.Trigger.Label>Ativos</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: 'chart.xyaxis.line', selected: 'chart.xyaxis.line' }}
+          md="bar_chart_4_bars"
+        />
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="macro">
-        <Label>Macro</Label>
-        <Icon sf={{ default: 'globe', selected: 'globe' }} />
+        <NativeTabs.Trigger.Label>Carteira</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: 'chart.pie.fill', selected: 'chart.pie.fill' }}
+          md="pie_chart"
+        />
       </NativeTabs.Trigger>
     </NativeTabs>
   );
