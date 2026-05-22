@@ -21,6 +21,8 @@ export const Colors = {
     on_surface: '#0f172a',
     on_surface_variant: '#45464d',
     on_primary: '#ffffff',
+    positive: '#735c00',
+    negative: '#B3261E',
     shadow_color: '#0f172a',
   },
 
@@ -36,6 +38,8 @@ export const Colors = {
     on_surface: '#f1f5f9',
     on_surface_variant: '#94a3b8',
     on_primary: '#131b2e',
+    positive: '#c9a227',
+    negative: '#EF5350',
     shadow_color: '#000000',
   },
 } as const;

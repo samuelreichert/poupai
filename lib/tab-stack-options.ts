@@ -1,12 +1,10 @@
-import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-
 import { Colors, type ColorScheme, Fonts } from '@/constants/theme';
 
-export function createTabStackOptions(scheme: ColorScheme): NativeStackNavigationOptions {
+export function createTabStackOptions(scheme: ColorScheme) {
   return {
     contentStyle: { backgroundColor: Colors[scheme].surface },
     headerTransparent: true,
-    headerBlurEffect: 'regular',
+    headerBlurEffect: 'regular' as const,
     headerLargeTitle: true,
     headerLargeTitleShadowVisible: false,
     headerLargeStyle: { backgroundColor: 'transparent' },

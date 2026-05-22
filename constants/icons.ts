@@ -4,10 +4,10 @@
  *
  * iOS:     SF Symbol string (systemImage prop on @expo/ui/swift-ui Button)
  * Android: XML vector drawable via require() — static literals required by Metro
- * Web:     Material icon name string (@expo/vector-icons/MaterialIcons)
+ * Web:     Material icon name string (@react-native-vector-icons/material-icons)
  */
 
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import { SFSymbols7_0 } from 'sf-symbols-typescript';
 
 export type IconName = 'person' | 'close';
