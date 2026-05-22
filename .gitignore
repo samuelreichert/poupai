@@ -37,6 +37,10 @@ yarn-error.*
 .claude/
 .agents/worktrees/
 
+# Supabase local CLI state
+supabase/.branches/
+supabase/.temp/
+
 # typescript
 *.tsbuildinfo
 
