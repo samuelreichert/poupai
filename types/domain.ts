@@ -1,0 +1,27 @@
+export type MacroKind =
+  | 'stocks'
+  | 'fiis'
+  | 'etf_exterior'
+  | 'tesouro'
+  | 'renda_fixa'
+  | 'cripto'
+  | 'custom';
+
+export type RiskProfile = 'conservative' | 'moderate' | 'aggressive';
+
+export interface Profile {
+  id: string;
+  display_name: string | null;
+  investment_goal: number;
+  risk_profile: RiskProfile | null;
+  onboarding_completed_at: string | null;
+  macro_allocation_completed_at: string | null;
+}
+
+export interface MacroPlanSummary {
+  investment_goal: number;
+  total_current_value: number;
+  remaining_to_goal: number;
+  ideal_percent_total: number;
+  macro_allocation_completed_at: string | null;
+}

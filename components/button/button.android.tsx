@@ -34,7 +34,7 @@ export function Button(props: ButtonProps) {
           colors={{ containerColor: colors.surface_container_high, contentColor: iconColor }}
           modifiers={[sizeModifier(btnSize, btnSize)]}
         >
-          <Icon source={xmlIcons[props.icon]} tintColor={iconColor} size={iconSize} />
+          <Icon source={xmlIcons[props.icon]} tint={iconColor} size={iconSize} />
         </FilledTonalIconButton>
       </Host>
     );
@@ -47,7 +47,7 @@ export function Button(props: ButtonProps) {
         shape={(<Shape.Pill />) as ShapeJSXElement}
         colors={{ containerColor: colors.surface_container_high, contentColor: iconColor }}
       >
-        {props.icon && <Icon source={xmlIcons[props.icon]} tintColor={iconColor} size={18} />}
+        {props.icon && <Icon source={xmlIcons[props.icon]} tint={iconColor} size={18} />}
         <ComposeText color={iconColor}>{props.label}</ComposeText>
       </FilledTonalButton>
     </Host>

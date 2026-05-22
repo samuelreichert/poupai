@@ -1,4 +1,4 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
 import { DEFAULT_SIZE } from '@/components/button/constants';

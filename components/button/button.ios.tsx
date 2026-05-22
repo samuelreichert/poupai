@@ -1,4 +1,4 @@
-import { Button as SwiftButton,Host } from '@expo/ui/swift-ui';
+import { Button as SwiftButton, Host } from '@expo/ui/swift-ui';
 import {
   buttonStyle as styleModifier,
   clipShape,
@@ -42,8 +42,11 @@ export function Button(props: ButtonProps) {
     );
   }
 
+  const textButtonHeight = 44;
+  const textButtonWidth = props.fullWidth ? '100%' : 180;
+
   return (
-    <Host>
+    <Host style={{ width: textButtonWidth, height: textButtonHeight }}>
       <SwiftButton
         onPress={props.onPress}
         label={props.label}

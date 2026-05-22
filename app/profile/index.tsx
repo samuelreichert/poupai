@@ -1,5 +1,5 @@
 import { FlashList } from '@shopify/flash-list';
-import { useNavigation, useRouter } from 'expo-router';
+import { Href, useNavigation, useRouter } from 'expo-router';
 import { useCallback, useRef } from 'react';
 import {
   NativeScrollEvent,
@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/button/button';
 import { Icon } from '@/components/icon';
 import { Colors, Radius, Spacing, Typography } from '@/constants/theme';
+import { useAuth } from '@/hooks/use-auth';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 const AVATAR_SIZE = 96;
@@ -33,7 +34,13 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
   const scheme = useColorScheme();
   const colors = Colors[scheme];
+  const { signOut } = useAuth();
   const titleShown = useRef(false);
+
+  const handleSignOut = useCallback(async () => {
+    await signOut();
+    router.replace('/(auth)/sign-in' as Href);
+  }, [router, signOut]);
 
   const MENU_ITEMS: MenuItem[] = [
     {
@@ -48,7 +55,7 @@ export default function ProfileScreen() {
       label: 'Sair',
       sf: 'rectangle.portrait.and.arrow.right',
       md: 'logout',
-      onPress: () => router.back(),
+      onPress: handleSignOut,
     },
   ];
 

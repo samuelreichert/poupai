@@ -17,4 +17,5 @@ export type IconButtonProps = BaseButtonProps & {
 export type TextButtonProps = BaseButtonProps & {
   variant: 'text';
   icon?: IconName;
+  fullWidth?: boolean;
 };

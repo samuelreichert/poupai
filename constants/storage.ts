@@ -24,8 +24,13 @@ export const storage = {
   set(key: string, value: boolean | string | number | ArrayBuffer) {
     getStorage()?.set(key, value);
   },
+  delete(key: string) {
+    getStorage()?.remove(key);
+  },
 };
 
 export const STORAGE_KEYS = {
   colorScheme: 'colorScheme',
+  macroAllocationCompletedPrefix: 'macroAllocationCompleted:',
+  lastInvestmentGoalPrefix: 'lastInvestmentGoal:',
 } as const;
