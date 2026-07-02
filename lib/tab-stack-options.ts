@@ -11,5 +11,11 @@ export function createTabStackOptions(scheme: ColorScheme) {
     headerShadowVisible: false,
     headerTitleStyle: { fontFamily: Fonts.manrope_semibold },
     headerLargeTitleStyle: { fontFamily: Fonts.manrope_bold },
+    scrollEdgeEffects: {
+      bottom: 'hidden' as const,
+      left: 'hidden' as const,
+      right: 'hidden' as const,
+      top: 'hidden' as const,
+    },
   };
 }
