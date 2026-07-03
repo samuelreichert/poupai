@@ -5,11 +5,11 @@ import { Colors, Radius, Spacing, Typography } from '@/constants/theme';
 import { useAuthFlow } from '@/hooks/use-auth-flow';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
-export default function SignInScreen() {
+export default function SignUpScreen() {
   const router = useRouter();
   const scheme = useColorScheme();
   const colors = Colors[scheme];
-  const auth = useAuthFlow('sign-in');
+  const auth = useAuthFlow('sign-up');
 
   const inputBackgroundColor = colors.surface_container_low;
   const primaryButtonBackgroundColor = colors.primary;
@@ -25,9 +25,9 @@ export default function SignInScreen() {
       style={[styles.container, { backgroundColor: colors.surface }]}
     >
       <View style={styles.header}>
-        <Text style={[styles.title, { color: colors.on_surface }]}>Entre na sua carteira</Text>
+        <Text style={[styles.title, { color: colors.on_surface }]}>Crie sua conta</Text>
         <Text style={[styles.subtitle, { color: colors.on_surface_variant }]}>
-          Acesse sua alocação, saldos e metas em um só lugar.
+          Comece com e-mail e senha para salvar sua carteira com segurança.
         </Text>
       </View>
 
@@ -51,15 +51,30 @@ export default function SignInScreen() {
           <Text style={[styles.label, { color: colors.on_surface_variant }]}>Senha</Text>
           <TextInput
             autoCapitalize="none"
-            autoComplete="password"
+            autoComplete="new-password"
             onChangeText={auth.setPassword}
+            placeholder="Mínimo de 6 caracteres"
+            placeholderTextColor={colors.on_surface_variant}
+            returnKeyType="next"
+            secureTextEntry
+            style={[styles.input, { backgroundColor: inputBackgroundColor, color: colors.on_surface }]}
+            value={auth.password}
+          />
+        </View>
+
+        <View style={styles.field}>
+          <Text style={[styles.label, { color: colors.on_surface_variant }]}>Confirmar senha</Text>
+          <TextInput
+            autoCapitalize="none"
+            autoComplete="new-password"
+            onChangeText={auth.setConfirmPassword}
             onSubmitEditing={auth.submit}
-            placeholder="Sua senha"
+            placeholder="Repita sua senha"
             placeholderTextColor={colors.on_surface_variant}
             returnKeyType="go"
             secureTextEntry
             style={[styles.input, { backgroundColor: inputBackgroundColor, color: colors.on_surface }]}
-            value={auth.password}
+            value={auth.confirmPassword}
           />
         </View>
 
@@ -77,18 +92,18 @@ export default function SignInScreen() {
           {auth.loading ? (
             <ActivityIndicator color={primaryButtonTextColor} />
           ) : (
-            <Text style={[styles.primaryButtonText, { color: primaryButtonTextColor }]}>Entrar</Text>
+            <Text style={[styles.primaryButtonText, { color: primaryButtonTextColor }]}>Criar conta</Text>
           )}
         </Pressable>
 
         <Pressable
           accessibilityRole="button"
           disabled={auth.loading}
-          onPress={() => router.push('/(auth)/sign-up' as Href)}
+          onPress={() => router.replace('/(auth)/sign-in' as Href)}
           style={[styles.secondaryButton, { backgroundColor: secondaryButtonBackgroundColor }]}
         >
           <Text style={[styles.secondaryButtonText, { color: secondaryButtonTextColor }]}>
-            Criar conta
+            Já tenho conta
           </Text>
         </Pressable>
       </View>

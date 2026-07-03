@@ -81,3 +81,11 @@ For each non-trivial branch, use OpenSpec in this order:
 2. `propose`
 3. `apply`
 4. `archive`
+
+Review gate:
+
+- After `explore`, share the exploration result before creating or applying implementation tasks.
+- After `propose`, share the generated OpenSpec artifacts for review.
+- Wait for explicit approval before running `apply`.
+- After `apply` is approved, continue through implementation and PR creation automatically.
+- After the PR is merged, run `archive` automatically and open the small archive PR.

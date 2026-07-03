@@ -11,6 +11,12 @@ The project SHALL use OpenSpec as the durable source of truth for planned produc
 - **WHEN** work starts
 - **THEN** the change is explored, proposed, implemented, and archived through OpenSpec artifacts
 
+#### Scenario: User reviews before apply
+- **GIVEN** a planned non-trivial change has completed exploration and proposal
+- **WHEN** the OpenSpec artifacts are ready
+- **THEN** the exploration result and generated proposal artifacts are shown to the user
+- **AND** implementation waits for explicit approval before apply begins
+
 ### Requirement: Expo SDK Baseline
 The project SHALL keep its Expo packages aligned to the active SDK baseline before starting new MVP feature work.
 
@@ -34,4 +40,3 @@ The app SHALL not expose SDK experiment/demo tabs in the product tab bar.
 - **GIVEN** the app is running in the MVP product flow
 - **WHEN** the native tab bar is displayed
 - **THEN** only product tabs are available, with no SDK 56 demo tab
-
