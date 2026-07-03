@@ -7,7 +7,6 @@ export type Database = {
         Row: {
           id: string;
           display_name: string | null;
-          investment_goal: number;
           risk_profile: 'conservative' | 'moderate' | 'aggressive' | null;
           onboarding_completed_at: string | null;
           macro_allocation_completed_at: string | null;
@@ -17,7 +16,6 @@ export type Database = {
         Insert: {
           id: string;
           display_name?: string | null;
-          investment_goal?: number;
           risk_profile?: 'conservative' | 'moderate' | 'aggressive' | null;
           onboarding_completed_at?: string | null;
           macro_allocation_completed_at?: string | null;
@@ -27,10 +25,42 @@ export type Database = {
         Update: {
           id?: string;
           display_name?: string | null;
-          investment_goal?: number;
           risk_profile?: 'conservative' | 'moderate' | 'aggressive' | null;
           onboarding_completed_at?: string | null;
           macro_allocation_completed_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      goals: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string;
+          target_value: number;
+          status: 'active' | 'reached' | 'archived';
+          reached_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string;
+          name: string;
+          target_value: number;
+          status?: 'active' | 'reached' | 'archived';
+          reached_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          name?: string;
+          target_value?: number;
+          status?: 'active' | 'reached' | 'archived';
+          reached_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
