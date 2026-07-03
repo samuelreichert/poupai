@@ -8,7 +8,7 @@ export type MacroKind =
   | 'custom';
 
 export type RiskProfile = 'conservative' | 'moderate' | 'aggressive';
-export type GoalStatus = 'active' | 'reached' | 'archived';
+export type GoalStatus = 'open' | 'reached' | 'archived';
 
 export interface Profile {
   id: string;

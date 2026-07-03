@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { getIdealPercentTotal, getMacroAllocationRows, MacroAllocationRow, MacroPlanInput } from '@/lib/macro-plan';
+import {
+  getIdealPercentTotal,
+  getMacroAllocationRows,
+  getNearestOpenGoal,
+  getTotalCurrentValue,
+  MacroAllocationRow,
+  MacroPlanInput,
+} from '@/lib/macro-plan';
 import { supabase } from '@/lib/supabase';
 import { MacroPlanSummary } from '@/types/domain';
 
@@ -17,18 +24,18 @@ export function useMacroPlan() {
       .select('macro_allocation_completed_at')
       .maybeSingle();
 
-    const { data: activeGoal } = await supabase
+    const { data: openGoals } = await supabase
       .from('goals')
-      .select('target_value')
-      .eq('status', 'active')
-      .maybeSingle();
+      .select('id, target_value')
+      .eq('status', 'open')
+      .order('target_value', { ascending: true })
+      .order('created_at', { ascending: true });
 
     const { data: macros } = await supabase
       .from('v_macro_position')
       .select('*')
       .order('display_order', { ascending: true });
 
-    const investmentGoal = activeGoal?.target_value ?? 0;
     const inputs: MacroPlanInput[] = (macros ?? []).map((macro) => ({
       id: macro.macro_id,
       name: macro.name,
@@ -38,8 +45,16 @@ export function useMacroPlan() {
       displayOrder: macro.display_order,
     }));
 
+    const totalCurrentValue = getTotalCurrentValue(inputs);
+    const nearestOpenGoal = getNearestOpenGoal(
+      totalCurrentValue,
+      (openGoals ?? []).map((goal) => ({
+        id: goal.id,
+        targetValue: goal.target_value,
+      })),
+    );
+    const investmentGoal = nearestOpenGoal?.targetValue ?? 0;
     const nextRows = getMacroAllocationRows(investmentGoal, inputs);
-    const totalCurrentValue = inputs.reduce((sum, macro) => sum + macro.currentValue, 0);
     const idealPercentTotal = getIdealPercentTotal(inputs);
 
     setRows(nextRows);
