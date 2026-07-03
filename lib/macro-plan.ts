@@ -1,4 +1,4 @@
-import { MacroKind } from '@/types/domain';
+import type { MacroKind } from '@/types/domain';
 
 export type MacroPlanInput = {
   id?: string;
@@ -13,6 +13,11 @@ export type MacroAllocationRow = MacroPlanInput & {
   idealValue: number;
   currentPercent: number;
   diffToIdeal: number;
+};
+
+export type OpenGoalInput = {
+  id?: string;
+  targetValue: number;
 };
 
 export const STARTER_MACRO_PLAN: MacroPlanInput[] = [
@@ -32,6 +37,16 @@ export function getTotalCurrentValue(macros: MacroPlanInput[]): number {
 
 export function getIdealPercentTotal(macros: MacroPlanInput[]): number {
   return macros.reduce((sum, macro) => sum + macro.idealPercent, 0);
+}
+
+export function getNearestOpenGoal(
+  totalCurrentValue: number,
+  goals: OpenGoalInput[],
+): OpenGoalInput | null {
+  const sortedGoals = [...goals].sort((a, b) => a.targetValue - b.targetValue);
+  const nextGoal = sortedGoals.find((goal) => goal.targetValue >= totalCurrentValue);
+
+  return nextGoal ?? (sortedGoals.length > 0 ? sortedGoals[sortedGoals.length - 1] : null);
 }
 
 export function isCompleteIdealPercentTotal(total: number): boolean {
