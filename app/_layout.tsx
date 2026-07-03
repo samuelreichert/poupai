@@ -28,8 +28,13 @@ function AuthGate() {
   const router = useRouter();
   const segments = useSegments();
   const { session, loading } = useAuth();
+  const bypassAuth = __DEV__ && process.env.EXPO_PUBLIC_BYPASS_AUTH === 'true';
 
   useEffect(() => {
+    if (bypassAuth) {
+      return;
+    }
+
     if (loading) {
       return;
     }
@@ -80,7 +85,7 @@ function AuthGate() {
     return () => {
       cancelled = true;
     };
-  }, [loading, router, segments, session]);
+  }, [bypassAuth, loading, router, segments, session]);
 
   return null;
 }
