@@ -14,7 +14,13 @@ export function useMacroPlan() {
 
     const { data: profile } = await supabase
       .from('profiles')
-      .select('investment_goal, macro_allocation_completed_at')
+      .select('macro_allocation_completed_at')
+      .maybeSingle();
+
+    const { data: activeGoal } = await supabase
+      .from('goals')
+      .select('target_value')
+      .eq('status', 'active')
       .maybeSingle();
 
     const { data: macros } = await supabase
@@ -22,7 +28,7 @@ export function useMacroPlan() {
       .select('*')
       .order('display_order', { ascending: true });
 
-    const investmentGoal = profile?.investment_goal ?? 0;
+    const investmentGoal = activeGoal?.target_value ?? 0;
     const inputs: MacroPlanInput[] = (macros ?? []).map((macro) => ({
       id: macro.macro_id,
       name: macro.name,
@@ -40,7 +46,7 @@ export function useMacroPlan() {
     setSummary({
       investment_goal: investmentGoal,
       total_current_value: totalCurrentValue,
-      remaining_to_goal: investmentGoal - totalCurrentValue,
+      remaining_to_goal: Math.max(investmentGoal - totalCurrentValue, 0),
       ideal_percent_total: idealPercentTotal,
       macro_allocation_completed_at: profile?.macro_allocation_completed_at ?? null,
     });

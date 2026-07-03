@@ -8,14 +8,23 @@ export type MacroKind =
   | 'custom';
 
 export type RiskProfile = 'conservative' | 'moderate' | 'aggressive';
+export type GoalStatus = 'active' | 'reached' | 'archived';
 
 export interface Profile {
   id: string;
   display_name: string | null;
-  investment_goal: number;
   risk_profile: RiskProfile | null;
   onboarding_completed_at: string | null;
   macro_allocation_completed_at: string | null;
+}
+
+export interface InvestmentGoal {
+  id: string;
+  user_id: string;
+  name: string;
+  target_value: number;
+  status: GoalStatus;
+  reached_at: string | null;
 }
 
 export interface MacroPlanSummary {
