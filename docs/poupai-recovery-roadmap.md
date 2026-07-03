@@ -41,7 +41,7 @@ OpenSpec flow:
 1. Explore auth edge cases and current routing.
 2. Propose the auth change.
 3. Apply tasks.
-4. Archive after merge.
+4. Archive in the same branch before opening the PR.
 
 ### PR 3: Goals History
 
@@ -56,7 +56,7 @@ OpenSpec flow:
 1. Explore data model and migration path.
 2. Propose the goals change.
 3. Apply tasks.
-4. Archive after merge.
+4. Archive in the same branch before opening the PR.
 
 ### PR 4: Macro Allocation Against Nearest Goal
 
@@ -71,7 +71,7 @@ OpenSpec flow:
 1. Explore allocation rules and empty-state behavior.
 2. Propose the macro-goal allocation change.
 3. Apply tasks.
-4. Archive after merge.
+4. Archive in the same branch before opening the PR.
 
 ## Operating Rule
 
@@ -87,5 +87,7 @@ Review gate:
 - After `explore`, share the exploration result before creating or applying implementation tasks.
 - After `propose`, share the generated OpenSpec artifacts for review.
 - Wait for explicit approval before running `apply`.
-- After `apply` is approved, continue through implementation and PR creation automatically.
-- After the PR is merged, run `archive` automatically and open the small archive PR.
+- After `apply` is approved, continue through implementation automatically.
+- Run `archive` in the same branch after implementation is complete.
+- Open one PR that contains implementation, archived change artifacts, and updated main specs.
+- Do not open a separate archive PR for future feature changes.

@@ -9,13 +9,19 @@ The project SHALL use OpenSpec as the durable source of truth for planned produc
 #### Scenario: A feature branch begins
 - **GIVEN** a planned non-trivial change such as auth, goals, or macro allocation logic
 - **WHEN** work starts
-- **THEN** the change is explored, proposed, implemented, and archived through OpenSpec artifacts
+- **THEN** the change is explored, proposed, implemented, and archived through OpenSpec artifacts before the PR is opened
 
 #### Scenario: User reviews before apply
 - **GIVEN** a planned non-trivial change has completed exploration and proposal
 - **WHEN** the OpenSpec artifacts are ready
 - **THEN** the exploration result and generated proposal artifacts are shown to the user
 - **AND** implementation waits for explicit approval before apply begins
+
+#### Scenario: Feature PR is opened
+- **GIVEN** implementation tasks are complete
+- **WHEN** the feature PR is created
+- **THEN** the OpenSpec change is already archived in the same branch
+- **AND** the PR includes implementation, archived change artifacts, and updated main specs
 
 ### Requirement: Expo SDK Baseline
 The project SHALL keep its Expo packages aligned to the active SDK baseline before starting new MVP feature work.
