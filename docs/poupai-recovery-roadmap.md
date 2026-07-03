@@ -73,21 +73,6 @@ OpenSpec flow:
 3. Apply tasks.
 4. Archive in the same branch before opening the PR.
 
-### PR 5: Prisma ORM Evaluation
-
-Scope:
-
-- Evaluate Prisma ORM as Supabase Postgres tooling/backend infrastructure.
-- Decide whether Prisma should own future migrations, generate developer-facing schema/types, or power future server/API routes.
-- Keep Prisma out of the Expo mobile runtime; the app should continue using Supabase client APIs unless a backend boundary is introduced.
-
-OpenSpec flow:
-
-1. Explore Prisma/Supabase architecture, RLS implications, migration ownership, and runtime boundaries.
-2. Propose the Prisma integration strategy.
-3. Apply only after explicit dependency approval.
-4. Archive in the same branch before opening the PR.
-
 ## Operating Rule
 
 For each non-trivial branch, use OpenSpec in this order:

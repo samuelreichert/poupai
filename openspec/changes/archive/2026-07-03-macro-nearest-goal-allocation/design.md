@@ -28,7 +28,6 @@ The missing piece is selecting `selectedGoalValue` from the right goal record.
 - No automatic reached-goal marking in this PR.
 - No market-data integration or asset-level rebalancing.
 - No change to the macro percent sum rule.
-- No Prisma ORM integration in this PR; Prisma should be evaluated separately as backend/tooling infrastructure, not as runtime code inside the Expo app.
 
 ## Decisions
 
@@ -64,11 +63,3 @@ The property name can remain `investment_goal` for this PR, but its value should
 - Removing one-active uniqueness can allow duplicate open targets → the MVP still uses one main onboarding goal; future goal-management UI should add duplicate prevention where appropriate.
 - Nearest-goal fallback can show a goal below current portfolio value if all open goals are below the current total → this is intentional until automatic reached detection exists.
 - Status rename affects TypeScript unions and any queries filtering `active` → implementation must update all app references.
-
-## Future Consideration: Prisma ORM
-
-Prisma can be useful for Supabase Postgres schema modeling, migrations, typed backend queries, admin scripts, or future API routes. It should not replace `supabase-js` inside the mobile app runtime because Prisma ORM requires a Node.js runtime and direct database credentials. A separate OpenSpec change should decide whether Prisma becomes:
-
-1. The source of truth for future database migrations.
-2. A generated schema/types companion for developer tooling only.
-3. A backend-only data access layer for future server/API routes.
