@@ -12,6 +12,7 @@
     "lint": "expo lint",
     "lint:fix": "expo lint --fix",
     "test:macro-plan": "node scripts/verify-macro-plan.mjs",
+    "test:onboarding-plan": "node scripts/verify-onboarding-plan.mjs",
     "format": "prettier --write \"**/*.{ts,tsx,js,json}\"",
     "check": "npm run typecheck && npm run lint && npm run format"
   },

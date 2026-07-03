@@ -2,7 +2,6 @@
 
 ## Purpose
 Persist investment goals as durable user-owned records so active targets and reached-goal history can support the MVP portfolio allocation flow.
-
 ## Requirements
 ### Requirement: Goal Records
 The system SHALL persist investment goals as user-owned records instead of a single profile field.
@@ -43,12 +42,12 @@ The system SHALL identify the user's nearest open investment goal for allocation
 - **THEN** it uses the open goal with the largest `target_value`
 
 ### Requirement: MVP Onboarding Goal Step
-The system SHALL capture the user's total portfolio target as part of the initial macro onboarding flow.
+The system SHALL capture the user's total portfolio target after macro selection and ideal allocation, before current macro values are captured.
 
 #### Scenario: New user completes MVP onboarding
-- **GIVEN** a user has created an account and selected macro allocations
+- **GIVEN** a user has created an account, selected macros, and assigned ideal macro percentages
 - **WHEN** they continue onboarding
-- **THEN** the app captures a total portfolio goal
+- **THEN** the app captures a total portfolio goal greater than zero
 - **AND** the app later captures how much the user already has in each selected macro
 
 ### Requirement: Existing Goal Migration
